@@ -15,13 +15,14 @@ apt update
 apt install -y kubelet kubeadm kubectl
 swapoff -a
 sed -i 's/^swap\ /#swap\ /g' /etc/fstab
-kubeadm config images pull
 
 # MASTER
 # CPU: 2 RAM: 2GB
 hostnamectl set-hotname k8s-master
+kubeadm config images pull
 kubeadm init
 mkdir -p $HOME/.kube
+
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
